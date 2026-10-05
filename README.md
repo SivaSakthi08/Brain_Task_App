@@ -1,91 +1,91 @@
-DevOps Practice Project – Dist Directory
+# Brain Tasks App – DevOps Deployment
 
-This repository contains the production-ready build files (dist folder) for DevOps practice and deployment exercises.
+## Project Overview
 
-It is intentionally structured to help learners focus on CI/CD pipelines, hosting, containerization, and infrastructure setup rather than application development.
+Deployment of the Brain Tasks React application using Docker, Docker Hub, Kubernetes (AWS EKS), AWS CodeBuild, AWS CodePipeline, GitHub, and CloudWatch.
 
-📁 What This Repository Contains
+## Architecture
 
-dist/ – Compiled and production-ready static files
+GitHub → AWS CodePipeline → AWS CodeBuild → Docker Hub → AWS EKS → Kubernetes LoadBalancer
 
-HTML
+## Application
 
-CSS
+Source Repository:
+https://github.com/Vennilavanguvi/Brain-Tasks-App.git
 
-JavaScript
+The application is served from the production `dist` build using Nginx.
 
-Assets (images, fonts, etc.)
+## Docker
 
-These files are ready to deploy to:
+Created a Dockerfile to serve the application using Nginx.
 
-Web servers (Nginx / Apache)
+Run locally on port 3000:
 
-Cloud platforms (AWS S3, Azure Blob, GCP Storage)
+```bash
+docker build -t brain-tasks-app .
+docker run -d -p 3000:80 brain-tasks-app
 
-Containerized environments (Docker + Nginx)
+## Docker Hub
 
-Kubernetes clusters
+Docker Image:
 
-CI/CD pipeline demonstrations
+`sivasakthi08/brain-tasks-app:latest`
 
-🎯 Purpose of This Repository
+## Kubernetes – AWS EKS
 
-This repository is designed for:
+EKS Cluster:
 
-DevOps beginners
+`sivasakthi`
 
-CI/CD practice
+Kubernetes resources:
 
-Deployment pipeline testing
+- `deployment.yaml`
+- `service.yaml`
 
-Docker & Kubernetes deployment exercises
+The deployment runs 2 application replicas.
 
-Web server configuration practice
+The Kubernetes Service uses a LoadBalancer to expose the application.
 
-Reverse proxy and load balancer setup
+## AWS CodeBuild
 
-The goal is to simulate real-world deployment scenarios using already built application files.
+CodeBuild Project:
 
-❓ Why is there NO package.json?
+`brain-tasks-build`
 
-You may notice that this repository does not include:
+The `buildspec.yml` performs:
 
-package.json
+- Docker image build
+- Docker Hub push
+- EKS authentication
+- Kubernetes deployment
+- Kubernetes service deployment
 
-node_modules
+## AWS CodePipeline
 
-Source code (src/)
+Pipeline:
 
-Build tools configuration
+`brain-tasks-pipeline`
 
-✅ Reason:
+Pipeline flow:
 
-This repository only contains the final production build output (dist), not the development source code.
+**GitHub → CodeBuild → EKS**
 
-In a typical project:
+The pipeline successfully builds and deploys the application to EKS.
 
-Developers write source code.
+## Monitoring
 
-The project is built using tools like:
+AWS CloudWatch Logs are enabled for CodeBuild to monitor build and deployment execution.
 
-Node.js
+## Live Application
 
-Webpack
+http://a8e23c2cf37784205b4857daa7402ca3-1977576573.ap-south-1.elb.amazonaws.com
 
-Vite
+## Repository Structure
 
-React (or other frameworks)
-
-A dist/ folder is generated.
-
-Only the production build is deployed to servers.
-
-This repository represents step 4 only.
-
-Since this is already the compiled output:
-
-No dependencies are required
-
-No build process is required
-
-No package.json is needed
+```text
+├── Dockerfile
+├── buildspec.yml
+├── deployment.yaml
+├── service.yaml
+├── dist/
+└── README.md
