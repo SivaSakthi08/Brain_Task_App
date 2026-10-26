@@ -20,5 +20,6 @@ spec:
       containers:
         - name: brain-tasks-container
           image: sivasakthi08/brain-tasks-app:latest
+	  imagePullPolicy: Always
           ports:
             - containerPort: 80

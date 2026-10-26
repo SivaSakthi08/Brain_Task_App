@@ -1,24 +1,20 @@
+
 version: 0.2
 
 phases:
   pre_build:
     commands:
-      - echo Logging in to Docker Hub...
-      - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-      - echo Updating kubeconfig...
-      - aws eks update-kubeconfig --name sivasakthi --region ap-south-1
+      - echo "Logging in to Docker Hub..."
+      - echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
 
   build:
     commands:
-      - echo Building Docker image...
-      - docker build -t $DOCKERHUB_USERNAME/brain-tasks-app:latest .
-      - echo Pushing Docker image...
-      - docker push $DOCKERHUB_USERNAME/brain-tasks-app:latest
+      - echo "Building Docker image..."
+      - docker build -t "$DOCKERHUB_USERNAME/brain-tasks-app:latest" .
+      - echo "Pushing Docker image to Docker Hub..."
+      - docker push "$DOCKERHUB_USERNAME/brain-tasks-app:latest"
 
   post_build:
     commands:
-      - echo Deploying application to EKS...
-      - kubectl apply -f deployment.yaml
-      - kubectl apply -f service.yaml
-      - kubectl rollout restart deployment/brain-task-deployment
-      - echo Deployment completed successfully.
+      - echo "Docker image build and push completed."
+

@@ -1,0 +1,21 @@
+
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Configuring access to EKS..."
+      - aws eks update-kubeconfig --name brain-tasks --region ap-south-1
+
+  build:
+    commands:
+      - echo "Deploying Brain Tasks to Kubernetes..."
+      - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
+      - kubectl rollout status deployment/brain-task-deployment --timeout=180s
+
+  post_build:
+    commands:
+      - echo "Deployment stage completed."
+      - kubectl get pods
+      - kubectl get service brain-task-service
