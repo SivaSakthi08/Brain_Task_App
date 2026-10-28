@@ -5,7 +5,7 @@ phases:
   pre_build:
     commands:
       - echo "Configuring access to EKS..."
-      - aws eks update-kubeconfig --name brain-tasks --region ap-south-1
+      - aws eks update-kubeconfig --name brain-tasks-v2 --region ap-south-1
 
   build:
     commands:
